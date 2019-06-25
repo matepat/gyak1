@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Kezdőlap</title>
+</h:head>
+<h:body>
+    <h:form id="mainForm">
+        <p:menubar>
+            <p:menuitem value="Kezdőlap" url="/"/>
+            <p:submenu label="Létrehozás">
+                <p:menuitem value="Harci Robot" url="/fighterrobot.xhtml"/>
+                <p:menuitem value="Gyógyító Robot" url="/medicalrobot.xhtml"/>
+                <p:menuitem value="Fegyver" url="/weapon.xhtml"/>
+                <p:menuitem value="Gyógyszer" url="/medicament.xhtml"/>
+            </p:submenu>
+        </p:menubar>
+        <p:growl id="msgs" showDetail="true"/>
+
+
+        <h1>Harci Robot</h1>
+        <p:dataTable var="fighterRobot" value="#{indexView.fighterRobots}" id="fighterRobots" editable="true">
+            <p:ajax event="rowEdit" listener="#{indexView.onFighterRobotRowEdit}" update=":mainForm:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{indexView.onRowCancel}" update=":mainForm:msgs" />
+
+            <p:column headerText="Id">
+                <h:outputText value="#{fighterRobot.id}" />
+            </p:column>
+
+            <p:column headerText="Name">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{fighterRobot.name}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{fighterRobot.name}" style="width:100%" label="Name"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Create Date">
+                <h:outputText value="#{fighterRobot.createdDate}" />
+            </p:column>
+
+            <p:column headerText="Last Modified Date">
+                <h:outputText value="#{fighterRobot.lastModifiedDate}" />
+            </p:column>
+
+            <p:column headerText="Weapon">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{fighterRobot.weapon.name}" /></f:facet>
+                    <f:facet name="input">
+                        <p:selectOneMenu id="weapon" value="#{fighterRobot.weapon}" converter="#{weaponConverter}">
+                            <f:selectItems value="#{fighterRobotManagerView.weapons}" var="weapon" itemLabel="#{weapon.name}" itemValue="#{weapon}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Funkciók">
+                <p:commandButton value="Törlés" icon="pi pi-ban" process="@this" actionListener="#{indexView.deleteFighterRobot(fighterRobot.id)}" update=":mainForm:fighterRobots"/>
+                <p:rowEditor />
+            </p:column>
+        </p:dataTable>
+
+        <h1>Gyógyító Robot</h1>
+        <p:dataTable var="medicalRobot" value="#{indexView.medicalRobots}" id="medicalRobots" editable="true">
+            <p:ajax event="rowEdit" listener="#{indexView.onMedicalRobotRowEdit}" update=":mainForm:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{indexView.onRowCancel}" update=":mainForm:msgs" />
+
+            <p:column headerText="Id">
+                <h:outputText value="#{medicalRobot.id}" />
+            </p:column>
+
+            <p:column headerText="Name">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{medicalRobot.name}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{medicalRobot.name}" style="width:100%" label="Name"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Create Date">
+                <h:outputText value="#{medicalRobot.createdDate}" />
+            </p:column>
+            <p:column headerText="Last Modified Date">
+                <h:outputText value="#{medicalRobot.lastModifiedDate}" />
+            </p:column>
+
+            <p:column headerText="Medicament">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{medicalRobot.medicament.name}" /></f:facet>
+                    <f:facet name="input">
+                        <p:selectOneMenu id="medicament" value="#{medicalRobot.medicament}" converter="#{medicamentConverter}">
+                            <f:selectItems value="#{medicalRobotManagerView.medicaments}" var="medicament" itemLabel="#{medicament.name}"
+                                           itemValue="#{medicament}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Funkciók">
+                <p:commandButton value="Törlés" icon="pi pi-ban" process="@this" actionListener="#{indexView.deleteMedicalRobot(medicalRobot.id)}" update=":mainForm:medicalRobots"/>
+                <p:rowEditor />
+            </p:column>
+        </p:dataTable>
+
+        <h1>Gyógyszerek</h1>
+        <p:dataTable var="medicament" value="#{indexView.medicaments}" id="medicaments" editable="true">
+            <p:ajax event="rowEdit" listener="#{indexView.onMedicamentnRowEdit}" update=":mainForm:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{indexView.onRowCancel}" update=":mainForm:msgs" />
+
+            <p:column headerText="Id">
+                <h:outputText value="#{medicament.id}" />
+            </p:column>
+
+            <p:column headerText="Name">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{medicament.name}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{medicament.name}" style="width:100%" label="Name"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Create Date">
+                <h:outputText value="#{medicament.createdDate}" />
+            </p:column>
+            <p:column headerText="Last Modified Date">
+                <h:outputText value="#{medicament.lastModifiedDate}" />
+            </p:column>
+            <p:column headerText="Funkciók">
+                <p:commandButton value="Törlés" icon="pi pi-ban" process="@this" actionListener="#{indexView.deleteMedicament(medicament.id)}" update=":mainForm:medicaments"/>
+                <p:rowEditor />
+            </p:column>
+        </p:dataTable>
+
+        <h1>Fegyverek</h1>
+        <p:dataTable var="weapon" value="#{indexView.weapons}" id="weapons" editable="true">
+            <p:ajax event="rowEdit" listener="#{indexView.onWeaponRowEdit}" update=":mainForm:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{indexView.onRowCancel}" update=":mainForm:msgs" />
+
+            <p:column headerText="Id">
+                <h:outputText value="#{weapon.id}" />
+            </p:column>
+
+            <p:column headerText="Name">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{weapon.name}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{weapon.name}" style="width:100%" label="Name"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Create Date">
+                <h:outputText value="#{weapon.createdDate}" />
+            </p:column>
+            <p:column headerText="Last Modified Date">
+                <h:outputText value="#{weapon.lastModifiedDate}" />
+            </p:column>
+            <p:column>
+                <p:commandButton value="Törlés" icon="pi pi-ban" actionListener="#{indexView.deleteWeapon(weapon.id)}" update=":mainForm:weapons"/>
+                <p:rowEditor/>
+            </p:column>
+        </p:dataTable>
+    </h:form>
+</h:body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xml:lang="en" lang="en"
+      xmlns:p="http://primefaces.org/ui">
+<h:head>
+    <title>Gyógyszer</title>
+</h:head>
+<h:body>
+    <h:form>
+        <p:menubar>
+            <p:menuitem value="Kezdőlap" url="/"/>
+            <p:submenu label="Létrehozás">
+                <p:menuitem value="Harci Robot" url="/fighterrobot.xhtml"/>
+                <p:menuitem value="Gyógyító Robot" url="/medicalrobot.xhtml"/>
+                <p:menuitem value="Fegyver" url="/weapon.xhtml"/>
+                <p:menuitem value="Gyógszer" url="/medicament.xhtml"/>
+            </p:submenu>
+        </p:menubar>
+    </h:form>
+
+    <h:form>
+        <p:messages id="messages" showDetail="true" closable="true"/>
+        <h3>Név</h3>
+        <p:inputText value="#{medicamentManagerView.selectedMedicament.name}"/>
+        <br/>
+        <p:commandButton value="Mentés" validateClient="true" actionListener="#{medicamentManagerView.save}"/>
+    </h:form>
+
+</h:body>
+</html>
